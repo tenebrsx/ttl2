@@ -1,0 +1,12 @@
+# Redirect rules for SPA
+/*    /index.html   200
+
+# Redirect old URLs (if any)
+/properties/*  /propiedades/:splat  301
+/locations/*   /ubicaciones/:splat  301
+/about         /nosotros            301
+/contact       /contacto            301
+/map           /mapa                301
+
+# Force HTTPS
+http://fluffy-zabaione-6d8438.netlify.app/*  https://fluffy-zabaione-6d8438.netlify.app/:splat  301!

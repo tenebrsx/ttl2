@@ -1,0 +1,20 @@
+# Robots.txt for Laura Alba Real Estate
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://fluffy-zabaione-6d8438.netlify.app/sitemap.xml
+
+# Crawl delay (optional)
+Crawl-delay: 1
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /api/
+
+# Allow important pages
+Allow: /propiedades
+Allow: /ubicaciones
+Allow: /nosotros
+Allow: /contacto
+Allow: /mapa
