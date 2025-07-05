@@ -213,10 +213,10 @@ const PropertyDetailPage = () => {
                 Agendar visita
               </button>
               <Link 
-                to={`/mapa?property=${property.id}`} 
+                to="/mapa" 
                 className="btn-secondary flex items-center justify-center"
               >
-                <MapPin size={20} className="mr-2" />
+                <Navigation size={20} className="mr-2" />
                 Ver en mapa
               </Link>
             </div>
