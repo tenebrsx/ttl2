@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 
 interface AuthUser {
   id: string;
@@ -33,7 +39,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const checkAuthStatus = () => {
+  const checkAuthStatus = useCallback(() => {
     const authStatus = localStorage.getItem("adminAuthenticated") === "true";
     const loginTime = localStorage.getItem("adminLoginTime");
 
@@ -62,12 +68,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setIsAuthenticated(false);
       setUser(null);
     }
-  };
+  }, []);
 
   useEffect(() => {
     // Check if user is authenticated on mount
     checkAuthStatus();
-  }, []);
+  }, [checkAuthStatus]);
 
   const refreshUser = async () => {
     try {
