@@ -80,7 +80,7 @@ const AddProperty = () => {
       setFormData((prev) => ({
         ...prev,
         [parent]: {
-          ...(prev[parent as keyof PropertyForm] as any),
+          ...(prev[parent as keyof PropertyForm] as Record<string, unknown>),
           [child]: value,
         },
       }));
@@ -125,9 +125,19 @@ const AddProperty = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(
-      "Admin functionality has been disabled. Database connection removed.",
-    );
+    setLoading(true);
+
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      alert(
+        "Admin functionality has been disabled. Database connection removed.",
+      );
+    } catch (error) {
+      console.error("Error submitting property:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Building,
   DollarSign,
@@ -6,16 +6,27 @@ import {
   TrendingUp,
   MapPin,
   Calendar,
-  AlertCircle,
 } from "lucide-react";
 import { properties } from "../../data/properties";
+
+interface Property {
+  id: string;
+  title: string;
+  location: string;
+  price: number;
+  type: string;
+  is_sold: boolean;
+  featured: boolean;
+  images: string[];
+  created_at: string;
+}
 
 interface DashboardStats {
   totalProperties: number;
   availableProperties: number;
   soldProperties: number;
   totalValue: number;
-  recentProperties: any[];
+  recentProperties: Property[];
 }
 
 const AdminDashboard = () => {

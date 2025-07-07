@@ -26,7 +26,7 @@ const AdminLogin = () => {
       } else {
         setError("Usuario o contraseña incorrectos");
       }
-    } catch (err) {
+    } catch {
       setError("Error al iniciar sesión. Inténtalo de nuevo.");
     } finally {
       setLoading(false);
