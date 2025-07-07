@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "npx vite",
+    "dev:clean": "lsof -ti:5173 | xargs kill -9 2>/dev/null || true && npm run dev",
     "build": "npx vite build",
     "lint": "eslint .",
-    "preview": "npx vite preview"
+    "preview": "npx vite preview",
+    "clean": "lsof -ti:5173,5174,5175,5176,5177 | xargs kill -9 2>/dev/null || true"
   },
   "dependencies": {
     "leaflet": "^1.9.4",

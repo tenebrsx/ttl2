@@ -33,11 +33,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    // Check if user is authenticated on mount
-    checkAuthStatus();
-  }, []);
-
   const checkAuthStatus = () => {
     const authStatus = localStorage.getItem("adminAuthenticated") === "true";
     const loginTime = localStorage.getItem("adminLoginTime");
@@ -68,6 +63,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setUser(null);
     }
   };
+
+  useEffect(() => {
+    // Check if user is authenticated on mount
+    checkAuthStatus();
+  }, []);
 
   const refreshUser = async () => {
     try {
