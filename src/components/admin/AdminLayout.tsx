@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Plus, 
-  Building, 
-  Settings, 
-  LogOut, 
-  Menu, 
+import { useState } from "react";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  LayoutDashboard,
+  Plus,
+  Building,
+  Settings,
+  LogOut,
+  Menu,
   X,
-  User
-} from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
+  User,
+} from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
 
 const AdminLayout = () => {
   const { user, signOut } = useAuth();
@@ -19,25 +19,36 @@ const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navigation = [
-    { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
-    { name: 'Agregar Propiedad', href: '/admin/add-property', icon: Plus },
-    { name: 'Todas las Propiedades', href: '/admin/properties', icon: Building },
-    { name: 'Configuración', href: '/admin/settings', icon: Settings },
+    { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
+    { name: "Agregar Propiedad", href: "/admin/add-property", icon: Plus },
+    {
+      name: "Todas las Propiedades",
+      href: "/admin/properties",
+      icon: Building,
+    },
+    { name: "Configuración", href: "/admin/settings", icon: Settings },
   ];
 
   const handleSignOut = async () => {
     await signOut();
-    navigate('/admin/login');
+    navigate("/admin/login");
   };
 
   return (
     <div className="min-h-screen bg-cream">
       {/* Mobile sidebar */}
-      <div className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
-        <div className="fixed inset-0 bg-black/50" onClick={() => setSidebarOpen(false)} />
+      <div
+        className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? "block" : "hidden"}`}
+      >
+        <div
+          className="fixed inset-0 bg-black/50"
+          onClick={() => setSidebarOpen(false)}
+        />
         <div className="fixed inset-y-0 left-0 w-64 bg-white shadow-lg">
           <div className="flex items-center justify-between p-4 border-b border-dusty-clay/20">
-            <h2 className="font-playfair text-xl font-bold text-soft-charcoal">Admin Panel</h2>
+            <h2 className="font-playfair text-xl font-bold text-soft-charcoal">
+              Admin Panel
+            </h2>
             <button
               onClick={() => setSidebarOpen(false)}
               className="p-2 rounded-md text-dusty-clay hover:text-deep-copper hover:bg-cream transition-colors duration-300"
@@ -55,8 +66,8 @@ const AdminLayout = () => {
                   onClick={() => setSidebarOpen(false)}
                   className={`flex items-center px-4 py-3 text-sm font-medium transition-colors duration-300 ${
                     isActive
-                      ? 'bg-deep-copper text-white'
-                      : 'text-dusty-clay hover:text-deep-copper hover:bg-cream'
+                      ? "bg-deep-copper text-white"
+                      : "text-dusty-clay hover:text-deep-copper hover:bg-cream"
                   }`}
                 >
                   <item.icon size={20} className="mr-3" />
@@ -72,7 +83,9 @@ const AdminLayout = () => {
       <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
         <div className="flex flex-col flex-grow bg-white shadow-lg">
           <div className="flex items-center px-4 py-6 border-b border-dusty-clay/20">
-            <h2 className="font-playfair text-xl font-bold text-soft-charcoal">Admin Panel</h2>
+            <h2 className="font-playfair text-xl font-bold text-soft-charcoal">
+              Admin Panel
+            </h2>
           </div>
           <nav className="mt-4 flex-1">
             {navigation.map((item) => {
@@ -83,8 +96,8 @@ const AdminLayout = () => {
                   to={item.href}
                   className={`flex items-center px-4 py-3 text-sm font-medium transition-colors duration-300 ${
                     isActive
-                      ? 'bg-deep-copper text-white'
-                      : 'text-dusty-clay hover:text-deep-copper hover:bg-cream'
+                      ? "bg-deep-copper text-white"
+                      : "text-dusty-clay hover:text-deep-copper hover:bg-cream"
                   }`}
                 >
                   <item.icon size={20} className="mr-3" />
@@ -100,7 +113,9 @@ const AdminLayout = () => {
               </div>
               <div>
                 <p className="text-sm font-medium text-soft-charcoal">Admin</p>
-                <p className="text-xs text-dusty-clay">{user?.username}</p>
+                <p className="text-xs text-dusty-clay">
+                  {user?.email || "admin@example.com"}
+                </p>
               </div>
             </div>
             <button

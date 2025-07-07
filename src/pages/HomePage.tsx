@@ -1,22 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight, MapPin, Star, Heart, Play } from 'lucide-react';
-import SEOHead from '../components/SEOHead';
-import PropertyCard from '../components/PropertyCard';
-import LocationCard from '../components/LocationCard';
-import TestimonialCard from '../components/TestimonialCard';
-import { properties } from '../data/properties';
-import { locations } from '../data/locations';
-import { testimonials } from '../data/testimonials';
+import { Link } from "react-router-dom";
+import { ArrowRight, MapPin, Star, Heart, Play } from "lucide-react";
+import SEOHead from "../components/SEOHead";
+import PropertyCard from "../components/PropertyCard";
+import LocationCard from "../components/LocationCard";
+import TestimonialCard from "../components/TestimonialCard";
+import { properties } from "../data/properties";
+import { locations } from "../data/locations";
+import { testimonials } from "../data/testimonials";
 
 const HomePage = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const featuredProperties = properties.filter(p => p.featured);
+  const featuredProperties = properties.filter((p) => p.featured);
   const featuredLocations = locations.slice(0, 3);
-
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
 
   return (
     <div className="min-h-screen">
@@ -28,14 +22,16 @@ const HomePage = () => {
         structuredData={{
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "name": "Laura Alba Real Estate - Inicio",
-          "description": "Página principal de Laura Alba Real Estate, especializada en propiedades de lujo en República Dominicana",
-          "url": "https://fluffy-zabaione-6d8438.netlify.app/",
-          "mainEntity": {
+          name: "Laura Alba Real Estate - Inicio",
+          description:
+            "Página principal de Laura Alba Real Estate, especializada en propiedades de lujo en República Dominicana",
+          url: "https://fluffy-zabaione-6d8438.netlify.app/",
+          mainEntity: {
             "@type": "RealEstateAgent",
-            "name": "Laura Alba",
-            "description": "Agente inmobiliario especializada en propiedades de lujo"
-          }
+            name: "Laura Alba",
+            description:
+              "Agente inmobiliario especializada en propiedades de lujo",
+          },
         }}
       />
       {/* Hero Section */}
@@ -49,7 +45,7 @@ const HomePage = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60"></div>
         </div>
-        
+
         <div className="relative z-10 text-center text-white section-padding max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="font-playfair text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 sm:mb-8 hero-text leading-tight">
             Aquí es donde
@@ -57,13 +53,20 @@ const HomePage = () => {
             <span className="text-deep-copper">tu historia comienza</span>
           </h1>
           <p className="text-lg sm:text-xl lg:text-2xl mb-8 sm:mb-12 max-w-3xl mx-auto opacity-90 hero-subtitle leading-relaxed sm:leading-loose px-4">
-            Propiedades seleccionadas con intención. Experiencias que transforman espacios en hogares donde tu vida florecerá.
+            Propiedades seleccionadas con intención. Experiencias que
+            transforman espacios en hogares donde tu vida florecerá.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center hero-cta px-4">
-            <Link to="/propiedades" className="btn-primary text-base sm:text-lg px-8 sm:px-12 py-4 sm:py-5 min-h-[48px] flex items-center justify-center">
+            <Link
+              to="/propiedades"
+              className="btn-primary text-base sm:text-lg px-8 sm:px-12 py-4 sm:py-5 min-h-[48px] flex items-center justify-center"
+            >
               Explorar Propiedades
             </Link>
-            <Link to="/nosotros" className="btn-secondary bg-white/10 border-white text-white hover:bg-white hover:text-soft-charcoal text-base sm:text-lg px-8 sm:px-12 py-4 sm:py-5 min-h-[48px] flex items-center justify-center">
+            <Link
+              to="/nosotros"
+              className="btn-secondary bg-white/10 border-white text-white hover:bg-white hover:text-soft-charcoal text-base sm:text-lg px-8 sm:px-12 py-4 sm:py-5 min-h-[48px] flex items-center justify-center"
+            >
               Conocer a Laura
             </Link>
           </div>
@@ -87,8 +90,9 @@ const HomePage = () => {
               <span className="text-deep-copper">experiencias de vida</span>
             </h2>
             <p className="text-text-gray text-xl max-w-3xl mx-auto leading-loose slide-up">
-              Cada hogar cuenta una historia única. Mi misión es encontrar aquella que resuene profundamente con la tuya, 
-              creando conexiones que van más allá de los metros cuadrados.
+              Cada hogar cuenta una historia única. Mi misión es encontrar
+              aquella que resuene profundamente con la tuya, creando conexiones
+              que van más allá de los metros cuadrados.
             </p>
           </div>
 
@@ -101,8 +105,9 @@ const HomePage = () => {
                 Intención
               </h3>
               <p className="text-text-gray leading-relaxed">
-                Cada propiedad es seleccionada con propósito. No se trata de cantidad, 
-                sino de encontrar espacios que verdaderamente resuenen con tus sueños más profundos.
+                Cada propiedad es seleccionada con propósito. No se trata de
+                cantidad, sino de encontrar espacios que verdaderamente resuenen
+                con tus sueños más profundos.
               </p>
             </div>
             <div className="text-center scale-in">
@@ -113,8 +118,9 @@ const HomePage = () => {
                 Conexión
               </h3>
               <p className="text-text-gray leading-relaxed">
-                La confianza es la base de todo. Trabajo contigo como si fueras familia, 
-                porque entiendo que estás tomando una de las decisiones más importantes de tu vida.
+                La confianza es la base de todo. Trabajo contigo como si fueras
+                familia, porque entiendo que estás tomando una de las decisiones
+                más importantes de tu vida.
               </p>
             </div>
             <div className="text-center scale-in">
@@ -125,8 +131,9 @@ const HomePage = () => {
                 Excelencia
               </h3>
               <p className="text-text-gray leading-relaxed">
-                Cada detalle importa. Desde la primera consulta hasta la entrega de llaves, 
-                mi compromiso es ofrecerte una experiencia que supere todas tus expectativas.
+                Cada detalle importa. Desde la primera consulta hasta la entrega
+                de llaves, mi compromiso es ofrecerte una experiencia que supere
+                todas tus expectativas.
               </p>
             </div>
           </div>
@@ -141,20 +148,27 @@ const HomePage = () => {
               Propiedades Destacadas
             </h2>
             <p className="text-text-gray text-xl max-w-3xl mx-auto leading-loose">
-              Una selección cuidadosa de propiedades excepcionales que definen el lujo, la elegancia y el arte de vivir bien.
+              Una selección cuidadosa de propiedades excepcionales que definen
+              el lujo, la elegancia y el arte de vivir bien.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-16">
             {featuredProperties.map((property, index) => (
-              <div key={property.id} style={{ animationDelay: `${index * 0.2}s` }}>
+              <div
+                key={property.id}
+                style={{ animationDelay: `${index * 0.2}s` }}
+              >
                 <PropertyCard property={property} />
               </div>
             ))}
           </div>
-          
+
           <div className="text-center">
-            <Link to="/propiedades" className="btn-primary inline-flex items-center text-lg px-12 py-5">
+            <Link
+              to="/propiedades"
+              className="btn-primary inline-flex items-center text-lg px-12 py-5"
+            >
               Ver todas las propiedades
               <ArrowRight size={24} className="ml-3" />
             </Link>
@@ -170,21 +184,28 @@ const HomePage = () => {
               Ubicaciones Privilegiadas
             </h2>
             <p className="text-text-gray text-xl max-w-3xl mx-auto leading-loose">
-              Descubre los destinos más exclusivos y deseados de República Dominicana, 
-              donde cada amanecer es una promesa de vida extraordinaria.
+              Descubre los destinos más exclusivos y deseados de República
+              Dominicana, donde cada amanecer es una promesa de vida
+              extraordinaria.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
             {featuredLocations.map((location, index) => (
-              <div key={location.id} style={{ animationDelay: `${index * 0.2}s` }}>
+              <div
+                key={location.id}
+                style={{ animationDelay: `${index * 0.2}s` }}
+              >
                 <LocationCard location={location} />
               </div>
             ))}
           </div>
-          
+
           <div className="text-center">
-            <Link to="/ubicaciones" className="btn-secondary inline-flex items-center text-lg px-12 py-5">
+            <Link
+              to="/ubicaciones"
+              className="btn-secondary inline-flex items-center text-lg px-12 py-5"
+            >
               Explorar todas las ubicaciones
               <MapPin size={24} className="ml-3" />
             </Link>
@@ -203,9 +224,11 @@ const HomePage = () => {
                 <span className="text-deep-copper">tu guía de confianza</span>
               </h2>
               <p className="text-text-gray text-lg mb-8 leading-loose">
-                Cada propiedad cuenta una historia. Mi misión es encontrar aquella que resuene con la tuya. 
-                Con más de una década de experiencia, he aprendido que comprar una casa es mucho más que 
-                una transacción: es encontrar el lugar donde tu vida florecerá en toda su plenitud.
+                Cada propiedad cuenta una historia. Mi misión es encontrar
+                aquella que resuene con la tuya. Con más de una década de
+                experiencia, he aprendido que comprar una casa es mucho más que
+                una transacción: es encontrar el lugar donde tu vida florecerá
+                en toda su plenitud.
               </p>
               <div className="flex items-center mb-10 space-x-12">
                 <div className="flex items-center">
@@ -214,18 +237,25 @@ const HomePage = () => {
                       <Star key={i} size={20} className="fill-current" />
                     ))}
                   </div>
-                  <span className="font-semibold text-soft-charcoal text-lg">4.9/5 Rating</span>
+                  <span className="font-semibold text-soft-charcoal text-lg">
+                    4.9/5 Rating
+                  </span>
                 </div>
                 <div className="flex items-center">
-                  <Heart className="text-deep-copper fill-current mr-3" size={24} />
-                  <span className="font-semibold text-soft-charcoal text-lg">200+ Familias</span>
+                  <Heart
+                    className="text-deep-copper fill-current mr-3"
+                    size={24}
+                  />
+                  <span className="font-semibold text-soft-charcoal text-lg">
+                    200+ Familias
+                  </span>
                 </div>
               </div>
               <Link to="/nosotros" className="btn-primary text-lg px-12 py-5">
                 Conoce mi historia
               </Link>
             </div>
-            
+
             <div className="order-1 lg:order-2 relative">
               <div className="relative">
                 <img
@@ -251,14 +281,19 @@ const HomePage = () => {
               Historias que Inspiran
             </h2>
             <p className="text-text-gray text-xl max-w-3xl mx-auto leading-loose">
-              Cada familia que he ayudado a encontrar su hogar es parte de mi propia historia. 
-              Sus palabras son el testimonio de una misión cumplida.
+              Cada familia que he ayudado a encontrar su hogar es parte de mi
+              propia historia. Sus palabras son el testimonio de una misión
+              cumplida.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {testimonials.map((testimonial, index) => (
-              <div key={testimonial.id} style={{ animationDelay: `${index * 0.2}s` }} className="scale-in">
+              <div
+                key={testimonial.id}
+                style={{ animationDelay: `${index * 0.2}s` }}
+                className="scale-in"
+              >
                 <TestimonialCard testimonial={testimonial} />
               </div>
             ))}
@@ -276,7 +311,8 @@ const HomePage = () => {
             <span className="text-deep-copper">¿Lo descubrimos juntos?</span>
           </h2>
           <p className="text-xl mb-12 max-w-3xl mx-auto opacity-90 leading-loose">
-            Comienza tu búsqueda hoy. Estoy aquí para guiarte en cada paso del camino hacia el hogar de tus sueños.
+            Comienza tu búsqueda hoy. Estoy aquí para guiarte en cada paso del
+            camino hacia el hogar de tus sueños.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link to="/contacto" className="btn-primary text-lg px-12 py-5">

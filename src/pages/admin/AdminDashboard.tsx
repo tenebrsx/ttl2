@@ -1,6 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Building, DollarSign, Eye, TrendingUp, MapPin, Calendar } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
+import React, { useState, useEffect } from "react";
+import {
+  Building,
+  DollarSign,
+  Eye,
+  TrendingUp,
+  MapPin,
+  Calendar,
+  AlertCircle,
+} from "lucide-react";
+import { properties } from "../../data/properties";
 
 interface DashboardStats {
   totalProperties: number;
@@ -16,7 +24,7 @@ const AdminDashboard = () => {
     availableProperties: 0,
     soldProperties: 0,
     totalValue: 0,
-    recentProperties: []
+    recentProperties: [],
   });
   const [loading, setLoading] = useState(true);
 
@@ -25,50 +33,51 @@ const AdminDashboard = () => {
   }, []);
 
   const fetchDashboardData = async () => {
+    setLoading(true);
     try {
-      const { data: properties, error } = await supabase
-        .from('properties')
-        .select('*')
-        .order('created_at', { ascending: false });
+      // Use local properties data
+      const localProperties = properties.map((prop) => ({
+        ...prop,
+        is_sold: false,
+        created_at: new Date().toISOString(),
+      }));
 
-      if (error) throw error;
+      const totalProperties = localProperties.length;
+      const availableProperties = localProperties.filter(
+        (p) => !p.is_sold,
+      ).length;
+      const soldProperties = localProperties.filter((p) => p.is_sold).length;
+      const totalValue = localProperties.reduce((sum, p) => sum + p.price, 0);
+      const recentProperties = localProperties.slice(0, 5);
 
-      if (properties) {
-        const totalProperties = properties.length;
-        const availableProperties = properties.filter(p => !p.is_sold).length;
-        const soldProperties = properties.filter(p => p.is_sold).length;
-        const totalValue = properties.reduce((sum, p) => sum + p.price, 0);
-        const recentProperties = properties.slice(0, 5);
-
-        setStats({
-          totalProperties,
-          availableProperties,
-          soldProperties,
-          totalValue,
-          recentProperties
-        });
-      }
+      setStats({
+        totalProperties,
+        availableProperties,
+        soldProperties,
+        totalValue,
+        recentProperties,
+      });
     } catch (error) {
-      console.error('Error fetching dashboard data:', error);
+      console.error("Error fetching dashboard data:", error);
     } finally {
       setLoading(false);
     }
   };
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('es-DO', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("es-DO", {
+      style: "currency",
+      currency: "USD",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('es-DO', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
+    return new Date(dateString).toLocaleDateString("es-DO", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
   };
 
@@ -83,7 +92,9 @@ const AdminDashboard = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-playfair text-3xl font-bold text-soft-charcoal">Dashboard</h1>
+        <h1 className="font-playfair text-3xl font-bold text-soft-charcoal">
+          Dashboard
+        </h1>
         <p className="text-dusty-clay mt-2">Resumen general de propiedades</p>
       </div>
 
@@ -95,8 +106,12 @@ const AdminDashboard = () => {
               <Building className="h-6 w-6 text-deep-copper" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-dusty-clay">Total Propiedades</p>
-              <p className="text-2xl font-bold text-soft-charcoal">{stats.totalProperties}</p>
+              <p className="text-sm font-medium text-dusty-clay">
+                Total Propiedades
+              </p>
+              <p className="text-2xl font-bold text-soft-charcoal">
+                {stats.totalProperties}
+              </p>
             </div>
           </div>
         </div>
@@ -108,7 +123,9 @@ const AdminDashboard = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-dusty-clay">Disponibles</p>
-              <p className="text-2xl font-bold text-soft-charcoal">{stats.availableProperties}</p>
+              <p className="text-2xl font-bold text-soft-charcoal">
+                {stats.availableProperties}
+              </p>
             </div>
           </div>
         </div>
@@ -120,7 +137,9 @@ const AdminDashboard = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-dusty-clay">Vendidas</p>
-              <p className="text-2xl font-bold text-soft-charcoal">{stats.soldProperties}</p>
+              <p className="text-2xl font-bold text-soft-charcoal">
+                {stats.soldProperties}
+              </p>
             </div>
           </div>
         </div>
@@ -132,7 +151,9 @@ const AdminDashboard = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-dusty-clay">Valor Total</p>
-              <p className="text-2xl font-bold text-soft-charcoal">{formatPrice(stats.totalValue)}</p>
+              <p className="text-2xl font-bold text-soft-charcoal">
+                {formatPrice(stats.totalValue)}
+              </p>
             </div>
           </div>
         </div>
@@ -141,7 +162,9 @@ const AdminDashboard = () => {
       {/* Recent Properties */}
       <div className="bg-white rounded-lg shadow-sm">
         <div className="px-6 py-4 border-b border-dusty-clay/20">
-          <h2 className="font-playfair text-xl font-bold text-soft-charcoal">Propiedades Recientes</h2>
+          <h2 className="font-playfair text-xl font-bold text-soft-charcoal">
+            Propiedades Recientes
+          </h2>
         </div>
         <div className="p-6">
           {stats.recentProperties.length === 0 ? (
@@ -155,15 +178,20 @@ const AdminDashboard = () => {
           ) : (
             <div className="space-y-4">
               {stats.recentProperties.map((property) => (
-                <div key={property.id} className="flex items-center justify-between p-4 border border-dusty-clay/20 rounded-lg hover:bg-cream/50 transition-colors duration-300">
+                <div
+                  key={property.id}
+                  className="flex items-center justify-between p-4 border border-dusty-clay/20 rounded-lg hover:bg-cream/50 transition-colors duration-300"
+                >
                   <div className="flex items-center space-x-4">
                     <img
-                      src={property.images[0] || '/placeholder-property.jpg'}
+                      src={property.images[0] || "/placeholder-property.jpg"}
                       alt={property.title}
                       className="w-16 h-16 object-cover rounded-lg"
                     />
                     <div>
-                      <h3 className="font-medium text-soft-charcoal">{property.title}</h3>
+                      <h3 className="font-medium text-soft-charcoal">
+                        {property.title}
+                      </h3>
                       <div className="flex items-center text-sm text-dusty-clay mt-1">
                         <MapPin size={14} className="mr-1" />
                         <span>{property.location}</span>
@@ -174,13 +202,17 @@ const AdminDashboard = () => {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-deep-copper">{formatPrice(property.price)}</p>
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      property.is_sold 
-                        ? 'bg-red-100 text-red-800' 
-                        : 'bg-green-100 text-green-800'
-                    }`}>
-                      {property.is_sold ? 'Vendida' : 'Disponible'}
+                    <p className="font-bold text-deep-copper">
+                      {formatPrice(property.price)}
+                    </p>
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        property.is_sold
+                          ? "bg-red-100 text-red-800"
+                          : "bg-green-100 text-green-800"
+                      }`}
+                    >
+                      {property.is_sold ? "Vendida" : "Disponible"}
                     </span>
                   </div>
                 </div>

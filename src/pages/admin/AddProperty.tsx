@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Save, Upload, X, Plus, MapPin } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Save, Upload, X, Plus, MapPin, AlertCircle } from "lucide-react";
 
 interface PropertyForm {
   title: string;
@@ -10,7 +9,7 @@ interface PropertyForm {
   bedrooms: string;
   bathrooms: string;
   area: string;
-  type: 'villa' | 'apartment' | 'penthouse' | 'house' | '';
+  type: "villa" | "apartment" | "penthouse" | "house" | "";
   description: string;
   amenities: string[];
   region: string;
@@ -25,149 +24,140 @@ interface PropertyForm {
 const AddProperty = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [newAmenity, setNewAmenity] = useState('');
-  const [newImage, setNewImage] = useState('');
+  const [newAmenity, setNewAmenity] = useState("");
+  const [newImage, setNewImage] = useState("");
   const [formData, setFormData] = useState<PropertyForm>({
-    title: '',
-    location: '',
-    price: '',
-    bedrooms: '',
-    bathrooms: '',
-    area: '',
-    type: '',
-    description: '',
+    title: "",
+    location: "",
+    price: "",
+    bedrooms: "",
+    bathrooms: "",
+    area: "",
+    type: "",
+    description: "",
     amenities: [],
-    region: '',
+    region: "",
     images: [],
     featured: false,
     coordinates: {
-      lat: '',
-      lng: ''
-    }
+      lat: "",
+      lng: "",
+    },
   });
 
   const locations = [
-    'Punta Cana', 'Santo Domingo', 'Cap Cana', 'Puerto Plata', 
-    'Jarabacoa', 'La Romana', 'Zona Colonial', 'Bávaro'
+    "Punta Cana",
+    "Santo Domingo",
+    "Cap Cana",
+    "Puerto Plata",
+    "Jarabacoa",
+    "La Romana",
+    "Zona Colonial",
+    "Bávaro",
   ];
 
-  const regions = [
-    'Este', 'Distrito Nacional', 'Norte', 'Cibao', 'Sur'
-  ];
+  const regions = ["Este", "Distrito Nacional", "Norte", "Cibao", "Sur"];
 
   const propertyTypes = [
-    { value: 'villa', label: 'Villa' },
-    { value: 'apartment', label: 'Apartamento' },
-    { value: 'penthouse', label: 'Penthouse' },
-    { value: 'house', label: 'Casa' }
+    { value: "villa", label: "Villa" },
+    { value: "apartment", label: "Apartamento" },
+    { value: "penthouse", label: "Penthouse" },
+    { value: "house", label: "Casa" },
   ];
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     const { name, value, type } = e.target;
-    
-    if (type === 'checkbox') {
+
+    if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked;
-      setFormData(prev => ({ ...prev, [name]: checked }));
-    } else if (name.includes('.')) {
-      const [parent, child] = name.split('.');
-      setFormData(prev => ({
+      setFormData((prev) => ({ ...prev, [name]: checked }));
+    } else if (name.includes(".")) {
+      const [parent, child] = name.split(".");
+      setFormData((prev) => ({
         ...prev,
         [parent]: {
-          ...prev[parent as keyof PropertyForm] as any,
-          [child]: value
-        }
+          ...(prev[parent as keyof PropertyForm] as any),
+          [child]: value,
+        },
       }));
     } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
   const addAmenity = () => {
     if (newAmenity.trim() && !formData.amenities.includes(newAmenity.trim())) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        amenities: [...prev.amenities, newAmenity.trim()]
+        amenities: [...prev.amenities, newAmenity.trim()],
       }));
-      setNewAmenity('');
+      setNewAmenity("");
     }
   };
 
   const removeAmenity = (amenity: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      amenities: prev.amenities.filter(a => a !== amenity)
+      amenities: prev.amenities.filter((a) => a !== amenity),
     }));
   };
 
   const addImage = () => {
     if (newImage.trim() && !formData.images.includes(newImage.trim())) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        images: [...prev.images, newImage.trim()]
+        images: [...prev.images, newImage.trim()],
       }));
-      setNewImage('');
+      setNewImage("");
     }
   };
 
   const removeImage = (image: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      images: prev.images.filter(img => img !== image)
+      images: prev.images.filter((img) => img !== image),
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-
-    try {
-      const propertyData = {
-        title: formData.title,
-        location: formData.location,
-        price: parseInt(formData.price),
-        bedrooms: parseInt(formData.bedrooms),
-        bathrooms: parseInt(formData.bathrooms),
-        area: parseInt(formData.area),
-        type: formData.type as 'villa' | 'apartment' | 'penthouse' | 'house',
-        description: formData.description,
-        amenities: formData.amenities,
-        region: formData.region,
-        images: formData.images,
-        featured: formData.featured,
-        coordinates: {
-          lat: parseFloat(formData.coordinates.lat) || 18.7357,
-          lng: parseFloat(formData.coordinates.lng) || -70.1627
-        },
-        is_sold: false
-      };
-
-      const { error } = await supabase
-        .from('properties')
-        .insert([propertyData]);
-
-      if (error) throw error;
-
-      navigate('/admin/properties');
-    } catch (error) {
-      console.error('Error adding property:', error);
-      alert('Error al agregar la propiedad. Por favor, intenta de nuevo.');
-    } finally {
-      setLoading(false);
-    }
+    alert(
+      "Admin functionality has been disabled. Database connection removed.",
+    );
   };
 
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-6">
-        <h1 className="font-playfair text-3xl font-bold text-soft-charcoal">Agregar Nueva Propiedad</h1>
-        <p className="text-dusty-clay mt-2">Completa todos los campos para publicar una nueva propiedad</p>
+        <h1 className="font-playfair text-3xl font-bold text-soft-charcoal">
+          Agregar Nueva Propiedad
+        </h1>
+        <p className="text-dusty-clay mt-2">
+          Completa todos los campos para publicar una nueva propiedad
+        </p>
+      </div>
+
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+        <div className="flex items-center">
+          <AlertCircle className="h-5 w-5 text-yellow-400 mr-2" />
+          <span className="text-sm text-yellow-800">
+            Admin functionality is currently disabled. Database connection has
+            been removed.
+          </span>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Basic Information */}
         <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h2 className="font-playfair text-xl font-bold text-soft-charcoal mb-4">Información Básica</h2>
-          
+          <h2 className="font-playfair text-xl font-bold text-soft-charcoal mb-4">
+            Información Básica
+          </h2>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-soft-charcoal mb-2">
@@ -211,8 +201,10 @@ const AddProperty = () => {
                 className="w-full px-4 py-3 border border-dusty-clay rounded-md focus:outline-none focus:border-deep-copper transition-colors duration-300"
               >
                 <option value="">Seleccionar ubicación</option>
-                {locations.map(location => (
-                  <option key={location} value={location}>{location}</option>
+                {locations.map((location) => (
+                  <option key={location} value={location}>
+                    {location}
+                  </option>
                 ))}
               </select>
             </div>
@@ -229,8 +221,10 @@ const AddProperty = () => {
                 className="w-full px-4 py-3 border border-dusty-clay rounded-md focus:outline-none focus:border-deep-copper transition-colors duration-300"
               >
                 <option value="">Seleccionar región</option>
-                {regions.map(region => (
-                  <option key={region} value={region}>{region}</option>
+                {regions.map((region) => (
+                  <option key={region} value={region}>
+                    {region}
+                  </option>
                 ))}
               </select>
             </div>
@@ -247,8 +241,10 @@ const AddProperty = () => {
                 className="w-full px-4 py-3 border border-dusty-clay rounded-md focus:outline-none focus:border-deep-copper transition-colors duration-300"
               >
                 <option value="">Seleccionar tipo</option>
-                {propertyTypes.map(type => (
-                  <option key={type.value} value={type.value}>{type.label}</option>
+                {propertyTypes.map((type) => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
+                  </option>
                 ))}
               </select>
             </div>
@@ -270,8 +266,10 @@ const AddProperty = () => {
 
         {/* Property Details */}
         <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h2 className="font-playfair text-xl font-bold text-soft-charcoal mb-4">Detalles de la Propiedad</h2>
-          
+          <h2 className="font-playfair text-xl font-bold text-soft-charcoal mb-4">
+            Detalles de la Propiedad
+          </h2>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div>
               <label className="block text-sm font-medium text-soft-charcoal mb-2">
@@ -341,7 +339,7 @@ const AddProperty = () => {
             <MapPin className="inline mr-2" size={20} />
             Coordenadas (Opcional)
           </h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-soft-charcoal mb-2">
@@ -377,8 +375,10 @@ const AddProperty = () => {
 
         {/* Amenities */}
         <div className="bg-white p-6 rounded-lg shadow-sm">
-          <h2 className="font-playfair text-xl font-bold text-soft-charcoal mb-4">Amenidades</h2>
-          
+          <h2 className="font-playfair text-xl font-bold text-soft-charcoal mb-4">
+            Amenidades
+          </h2>
+
           <div className="flex gap-2 mb-4">
             <input
               type="text"
@@ -386,7 +386,9 @@ const AddProperty = () => {
               onChange={(e) => setNewAmenity(e.target.value)}
               className="flex-1 px-4 py-2 border border-dusty-clay rounded-md focus:outline-none focus:border-deep-copper transition-colors duration-300"
               placeholder="Agregar amenidad..."
-              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addAmenity())}
+              onKeyPress={(e) =>
+                e.key === "Enter" && (e.preventDefault(), addAmenity())
+              }
             />
             <button
               type="button"
@@ -422,7 +424,7 @@ const AddProperty = () => {
             <Upload className="inline mr-2" size={20} />
             Imágenes
           </h2>
-          
+
           <div className="flex gap-2 mb-4">
             <input
               type="url"
@@ -430,7 +432,9 @@ const AddProperty = () => {
               onChange={(e) => setNewImage(e.target.value)}
               className="flex-1 px-4 py-2 border border-dusty-clay rounded-md focus:outline-none focus:border-deep-copper transition-colors duration-300"
               placeholder="URL de la imagen..."
-              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addImage())}
+              onKeyPress={(e) =>
+                e.key === "Enter" && (e.preventDefault(), addImage())
+              }
             />
             <button
               type="button"
@@ -465,7 +469,7 @@ const AddProperty = () => {
         <div className="flex justify-end space-x-4">
           <button
             type="button"
-            onClick={() => navigate('/admin/properties')}
+            onClick={() => navigate("/admin/properties")}
             className="px-6 py-3 border border-dusty-clay text-dusty-clay rounded-md hover:bg-cream transition-colors duration-300"
           >
             Cancelar
@@ -474,7 +478,7 @@ const AddProperty = () => {
             type="submit"
             disabled={loading}
             className={`px-6 py-3 bg-deep-copper text-white rounded-md hover:bg-accent-clay transition-colors duration-300 flex items-center ${
-              loading ? 'opacity-50 cursor-not-allowed' : ''
+              loading ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
             {loading ? (
